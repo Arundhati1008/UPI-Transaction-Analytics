@@ -2,16 +2,50 @@
 
 > *"Ask your payments data anything."*
 
-An AI-powered UPI transaction analytics platform built with Python, Streamlit, and OpenAI — enabling natural language querying over 20,000 real UPI transactions across 4 Indian cities.
+A modern AI-powered analytics web app that helps users analyze UPI (Unified Payments Interface) transactions through natural language queries. Built using Streamlit, OpenAI GPT, and Python — this project converts raw financial data into meaningful insights, instantly.
 
 ---
 
-## 🚀 Live Demo
+## 🌟 Features
 
-> Ask questions like:
-> - *"How much was spent at Amazon in Delhi?"*
-> - *"What is the total food spending in Mumbai?"*
-> - *"Which city has the highest transaction volume?"*
+### 🔍 AI Chatbot (OpenAI GPT-powered)
+Ask natural questions like:
+- *"How much did I spend at Amazon in Mumbai?"*
+- *"Which city has the highest transactions?"*
+- *"What is the total amount spent on Shopping in Delhi?"*
+- *"What is the top merchant this month?"*
+
+> The chatbot uses **real dataset metrics — not guesses.**
+
+---
+
+### 📊 Data Insights
+The system precomputes analytics including:
+- Merchant-wise total spending
+- City-wise spending
+- Purpose-wise spending
+- Merchant × City combinations
+- City × Purpose combinations
+- Monthly transaction trends
+- Device type usage & Gender distribution
+
+---
+
+### 🧠 Smart Metric Engine
+Data is processed in Python and stored in a structured dictionary:
+
+✔ Accurate — ✔ 100% real data — ✔ No hallucinations — ✔ No wrong interpretations
+
+All chatbot answers come **only** from the precomputed metrics dictionary.
+
+---
+
+### 🖥️ Beautiful Streamlit UI
+- Clean blue-and-white fintech theme
+- Expandable dataset viewer
+- Chat-style UI with user message bubbles
+- Styled AI response boxes
+- Fully responsive layout
 
 ---
 
@@ -25,30 +59,20 @@ An AI-powered UPI transaction analytics platform built with Python, Streamlit, a
 | **Purposes** | Food, Travel, Shopping, Bill Payment, Others |
 | **Payment Methods** | Phone Number, QR Code, UPI ID |
 | **Average Transaction** | ₹993 |
-| **Date Range** | 2024 |
-
----
-
-## 🧠 Features
-
-- 📈 **Power BI Dashboard** — Visual KPIs including revenue trends, merchant performance, city-wise spend, success/failure rates
-- 💬 **AI Conversational Assistant** — Ask questions in plain English and get instant data-backed answers
-- 🔍 **Multi-dimension Analytics** — Merchant × City, City × Purpose, Age Group, Gender, Device Type breakdowns
-- ⚡ **Precomputed Metrics** — Fast responses via aggregated dataset metrics passed to LLM
-- 🎨 **Custom Streamlit UI** — Clean, styled interface with expandable dataset viewer
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
+| Technology | Purpose |
 |---|---|
-| **Data Storage** | CSV / SQL (PostgreSQL schema included) |
-| **Data Processing** | Python, Pandas |
-| **AI Engine** | OpenAI GPT-4o-mini |
-| **Web App** | Streamlit |
-| **Dashboard** | Power BI |
-| **Environment** | python-dotenv |
+| **Python** | Backend logic & data preprocessing |
+| **Pandas** | Data cleaning & summarization |
+| **Streamlit** | Web UI framework |
+| **OpenAI GPT (gpt-4o-mini)** | AI chatbot engine |
+| **python-dotenv** | Secure API key storage |
+| **Power BI** | Visual analytics dashboard |
+| **Git & GitHub** | Version control |
 
 ---
 
@@ -58,45 +82,59 @@ An AI-powered UPI transaction analytics platform built with Python, Streamlit, a
 flowiq/
 │
 ├── data/
-│   └── Transaction details.csv       # 20,000 UPI transactions
+│   └── Transaction details.csv    # 20,000 UPI transactions
 │
-├── chatbot.py                         # AI assistant logic (OpenAI + metrics)
-├── app.py                             # Streamlit UI
-├── schema.sql                         # SQL schema for database setup
-├── requirements.txt                   # Python dependencies
-├── .env.example                       # Environment variable template
+├── chatbot.py                      # AI assistant — metrics + OpenAI logic
+├── app.py                          # Streamlit UI
+├── schema.sql                      # SQL schema for database setup
+├── requirements.txt                # Python dependencies
+├── .env.example                    # Environment variable template
 └── README.md
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚙️ Setup Instructions
 
-### 1. Clone the repository
+### 1️⃣ Clone the repository
 ```bash
 git clone https://github.com/yourusername/flowiq.git
 cd flowiq
 ```
 
-### 2. Install dependencies
+### 2️⃣ Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Set up environment variables
-```bash
-cp .env.example .env
-# Add your OpenAI API key inside .env
+### 3️⃣ Add your OpenAI API key
+
+Create a `.env` file:
+```
+OPENAI_API_KEY=your-key-here
 ```
 
-`.env` file:
-```
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-### 4. Run the app
+### 4️⃣ Run the app
 ```bash
 streamlit run app.py
+```
+
+---
+
+## 💬 How It Works
+
+```
+✔ Step 1 — Load Dataset
+CSV → Pandas → Clean columns → Generate metrics
+
+✔ Step 2 — Build Metrics
+Python generates summaries:
+  • Merchant totals          • City totals
+  • City × Purpose combos    • Merchant × City combos
+  • Monthly trends
+
+✔ Step 3 — AI Answers Queries
+User question → GPT-4o-mini → Matches metrics → Returns real values
 ```
 
 ---
@@ -111,12 +149,12 @@ CREATE TABLE upi_transactions (
     Amount                DECIMAL(10,2),
     RemainingBalance      DECIMAL(10,2),
     Currency              VARCHAR(10),
-    Status                VARCHAR(10),
-    PaymentMethod         VARCHAR(20),
+    Status                VARCHAR(10),          -- 'Success' / 'Failed'
+    PaymentMethod         VARCHAR(20),          -- 'Phone Number', 'QR Code', 'UPI ID'
     PaymentMode           VARCHAR(20),
-    MerchantName          VARCHAR(50),
-    Purpose               VARCHAR(30),
-    City                  VARCHAR(30),
+    MerchantName          VARCHAR(50),          -- Amazon, Swiggy, Zomato, Flipkart, IRCTC
+    Purpose               VARCHAR(30),          -- Food, Travel, Shopping, Bill Payment, Others
+    City                  VARCHAR(30),          -- Delhi, Mumbai, Bangalore, Hyderabad
     Gender                VARCHAR(10),
     CustomerAge           INT,
     AgeGroup              VARCHAR(5),
@@ -131,28 +169,6 @@ CREATE TABLE upi_transactions (
 
 ---
 
-## 💡 How the AI Assistant Works
-
-```
-User Question
-     ↓
-Precomputed Metrics (Pandas aggregations)
-     ↓
-Prompt Engineering (metrics + question → GPT-4o-mini)
-     ↓
-Natural Language Answer
-```
-
-The assistant has access to:
-- Top merchants by transaction count & total amount
-- City-wise spend breakdown
-- Merchant × City combination totals
-- City × Purpose combination totals
-- Monthly transaction trends
-- Payment method, device type & gender distribution
-
----
-
 ## 📸 Screenshots
 
 > *(Add Power BI dashboard screenshot here)*
@@ -160,25 +176,12 @@ The assistant has access to:
 
 ---
 
-## 📝 Sample Questions to Ask
-
-```
-"How much was spent at Zomato in Bangalore?"
-"Which city has the most transactions?"
-"What is the total travel spending in Delhi?"
-"Which merchant has the highest revenue?"
-"Show me monthly transaction trends"
-"What is the most used payment method?"
-```
-
----
-
 ## 🔮 Future Enhancements
 
 - [ ] Multi-turn conversation memory
-- [ ] Anomaly detection (unusual transaction spikes)
+- [ ] Anomaly detection on unusual transaction spikes
 - [ ] Spend forecasting using Prophet / Linear Regression
-- [ ] Dashboard auto-filter based on chatbot response
+- [ ] Dashboard auto-filter triggered by chatbot response
 - [ ] User authentication & personalized history
 
 ---
@@ -186,8 +189,8 @@ The assistant has access to:
 ## 👩‍💻 Author
 
 **Arundhati Thakur**
-- Built as part of a Data Analytics portfolio project
-- Tools: Python • SQL • Power BI • OpenAI API • Streamlit
+Data Analytics Portfolio Project
+Python • SQL • Power BI • OpenAI API • Streamlit
 
 ---
 
