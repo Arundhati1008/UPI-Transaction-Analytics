@@ -169,11 +169,6 @@ CREATE TABLE upi_transactions (
 
 ---
 
-## 📸 Screenshots
-
-> *(Add Power BI dashboard screenshot here)*
-> *(Add Streamlit chatbot UI screenshot here)*
-
 ---
 
 ## 🔮 Future Enhancements
